@@ -14761,6 +14761,22 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -14771,6 +14787,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       company: {},
+      searchRequest: false,
+      searchSuccess: false,
+      searchError: false,
       search: ""
     };
   },
@@ -14785,29 +14804,54 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.prev = 0;
+                _this.searchRequest = true; // request
+
                 param = "api/virtual-office/".concat(_this.search);
-                _context.next = 4;
+                _context.next = 5;
                 return axios.get(param).then(function (_ref) {
                   var data = _ref.data;
                   return _this.company = data;
                 });
 
-              case 4:
-                _context.next = 9;
+              case 5:
+                // when kode is exits
+                if (_this.company.hasOwnProperty('id')) {
+                  // success
+                  _this.searchRequest = false;
+                  _this.searchSuccess = true;
+                  _this.searchError = false;
+                } else {
+                  // error
+                  _this.searchRequest = false;
+                  _this.searchSuccess = false;
+                  _this.searchError = true;
+                }
+
+                _context.next = 11;
                 break;
 
-              case 6:
-                _context.prev = 6;
+              case 8:
+                _context.prev = 8;
                 _context.t0 = _context["catch"](0);
                 console.log(_context.t0);
 
-              case 9:
+              case 11:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 6]]);
+        }, _callee, null, [[0, 8]]);
       }))();
+    }
+  },
+  watch: {
+    search: function search(val) {
+      if (val) {// console.log(val)
+      } else {
+        this.searchRequest = false;
+        this.searchSuccess = false;
+        this.searchError = false;
+      }
     }
   },
   created: function created() {// this.searchVo();
@@ -73381,7 +73425,7 @@ var render = function() {
       _c("div", { staticClass: "py-12" }, [
         _c("div", { staticClass: "max-w-7xl mx-auto sm:px-6 lg:px-8" }, [
           _c("div", { staticClass: "grid grid-cols-12 gap-4" }, [
-            _c("div", { staticClass: "col-span-4" }, [
+            _c("div", { staticClass: "col-span-12" }, [
               _c(
                 "div",
                 { staticClass: "grid grid-cols-6 gap-4 items-center" },
@@ -73409,7 +73453,12 @@ var render = function() {
                             }
                           ],
                           staticClass:
-                            "h-10 w-full sm:rounded-l-lg focus:ring-blue-500 focus:border-blue-500 sm:text-sm border-gray-200",
+                            "h-10 w-full sm:rounded-l-lg sm:text-sm border-gray-200",
+                          class: {
+                            "focus:ring-red-500 focus:border-red-500 border-red-500":
+                              _vm.searchError,
+                            "focus:ring-blue-500 focus:border-blue-500": !_vm.searchError
+                          },
                           attrs: {
                             type: "text",
                             placeholder: "Cari Virtual Office .."
@@ -73441,554 +73490,740 @@ var render = function() {
                           1
                         )
                       ]
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-span-6" }, [
-                    _c("div", { staticClass: "max-w-full" }, [
-                      _c(
-                        "div",
-                        { staticClass: "bg-white shadow-lg rounded-lg py-3" },
-                        [
-                          _c("div", { staticClass: "py-2 px-10" }, [
-                            _c(
-                              "h3",
-                              {
-                                staticClass:
-                                  "text-center text-xl text-gray-900 font-medium leading-8"
-                              },
-                              [_vm._v("Data Perusahan")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "text-center text-gray-400 text-xs font-semibold"
-                              },
-                              [_c("p", [_vm._v("menampilkan data perusahan")])]
-                            ),
-                            _vm._v(" "),
-                            _vm.company.hasOwnProperty("company")
-                              ? _c("table", { staticClass: "text-xs my-3" }, [
-                                  _c("tbody", [
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Nama Perusahaan")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.company.company.nama_perusahaan
-                                          )
-                                        )
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Person in Charge")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(_vm._s(_vm.company.company.pic))
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Telepone")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(
-                                          _vm._s(_vm.company.company.telepon)
-                                        )
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Email")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(
-                                          _vm._s(_vm.company.company.email)
-                                        )
-                                      ])
-                                    ])
-                                  ])
-                                ])
-                              : _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "mt-3 bg-red-400 text-white rounded-xl text-center font-bold"
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                            data tidak tersedia\n                                        "
-                                    )
-                                  ]
-                                )
-                          ])
-                        ]
-                      )
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "col-span-6" }, [
-                    _c("div", { staticClass: "max-w-full" }, [
-                      _c(
-                        "div",
-                        { staticClass: "bg-white shadow-lg rounded-lg py-3" },
-                        [
-                          _c("div", { staticClass: "py-2 px-10" }, [
-                            _c(
-                              "h3",
-                              {
-                                staticClass:
-                                  "text-center text-xl text-gray-900 font-medium leading-8"
-                              },
-                              [_vm._v("Virtual Office")]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "div",
-                              {
-                                staticClass:
-                                  "text-center text-gray-400 text-xs font-semibold"
-                              },
-                              [
-                                _c("p", [
-                                  _vm._v("menampilkan data virtual office")
-                                ])
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _vm.company.hasOwnProperty("id")
-                              ? _c("table", { staticClass: "text-xs my-3" }, [
-                                  _c("tbody", [
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Harga Virtual Office")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(_vm._s(_vm.company.harga_vo))
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Tanggal Aggrement")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(
-                                          _vm._s(_vm.company.tanggal_aggrement)
-                                        )
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Tanggal Selesai")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(
-                                          _vm._s(_vm.company.tanggal_selesai)
-                                        )
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Fasilitas Meeting Room")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.company.fasilitas_meeting_room
-                                          )
-                                        )
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Fasilitas Konsultasi Pajak")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.company
-                                              .fasilitas_konsultasi_pajak
-                                          )
-                                        )
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Fasilitas Private Office")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.company.fasilitas_private_office
-                                          )
-                                        )
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c("tr", [
-                                      _c(
-                                        "td",
-                                        {
-                                          staticClass:
-                                            "px-2 py-2 text-gray-500 font-semibold"
-                                        },
-                                        [_vm._v("Papan Nama Perusahaan")]
-                                      ),
-                                      _vm._v(" "),
-                                      _c("td", { staticClass: "px-2 py-2" }, [
-                                        _vm._v(
-                                          _vm._s(
-                                            _vm.company.papan_nama_perusahaan
-                                          )
-                                        )
-                                      ])
-                                    ])
-                                  ])
-                                ])
-                              : _c(
-                                  "div",
-                                  {
-                                    staticClass:
-                                      "mt-3 bg-red-400 text-white rounded-xl text-center font-bold"
-                                  },
-                                  [
-                                    _vm._v(
-                                      "\n                                            data tidak tersedia\n                                        "
-                                    )
-                                  ]
-                                )
-                          ])
-                        ]
-                      )
-                    ])
+                    ),
+                    _vm._v(" "),
+                    _vm.searchError
+                      ? _c(
+                          "span",
+                          {
+                            staticClass:
+                              "flex items-center font-medium tracking-wide text-red-500 text-xs mt-1 ml-1"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                Kode tidak sesuai, masukan kode yang sesuai\n                            "
+                            )
+                          ]
+                        )
+                      : _c(
+                          "span",
+                          {
+                            staticClass:
+                              "flex items-center font-medium tracking-wide text-blue-500 text-xs mt-1 ml-1"
+                          },
+                          [
+                            _vm._v(
+                              "\n                                Mencari berdasarkan kode\n                            "
+                            )
+                          ]
+                        )
                   ])
                 ]
               )
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "col-span-8" }, [
+            _c("div", { staticClass: "col-span-12" }, [
               _c(
                 "div",
-                {
-                  staticClass:
-                    "bg-white overflow-hidden shadow-lg sm:rounded-lg"
-                },
+                { staticClass: "grid grid-cols-12 gap-4 items-start" },
                 [
-                  _c("div", { staticClass: "flex flex-col" }, [
+                  _c("div", { staticClass: "col-span-4" }, [
                     _c(
                       "div",
-                      {
-                        staticClass: "-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
-                      },
+                      { staticClass: "grid grid-cols-6 gap-4 items-start" },
                       [
-                        _c(
-                          "div",
-                          {
-                            staticClass:
-                              "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
-                          },
-                          [
+                        _vm.company.hasOwnProperty("id")
+                          ? _c("div", { staticClass: "col-span-6" }, [
+                              _c("div", { staticClass: "max-w-full" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "bg-white shadow-lg rounded-lg py-3"
+                                  },
+                                  [
+                                    _c("div", { staticClass: "py-2 px-10" }, [
+                                      _c(
+                                        "h3",
+                                        {
+                                          staticClass:
+                                            "text-center text-xl text-gray-900 font-medium leading-8"
+                                        },
+                                        [_vm._v("Data Perusahan")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "text-center text-gray-400 text-xs font-semibold"
+                                        },
+                                        [
+                                          _c("p", [
+                                            _vm._v("menampilkan data perusahan")
+                                          ])
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm.company.hasOwnProperty("company")
+                                        ? _c(
+                                            "table",
+                                            { staticClass: "text-xs my-3" },
+                                            [
+                                              _c("tbody", [
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [_vm._v("Nama Perusahaan")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company.company
+                                                            .nama_perusahaan
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [_vm._v("Person in Charge")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company.company
+                                                            .pic
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [_vm._v("Telepone")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company.company
+                                                            .telepon
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [_vm._v("Email")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company.company
+                                                            .email
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ])
+                                              ])
+                                            ]
+                                          )
+                                        : _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "mt-3 bg-red-400 text-white rounded-xl text-center font-bold"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                                data tidak tersedia\n                                            "
+                                              )
+                                            ]
+                                          )
+                                    ])
+                                  ]
+                                )
+                              ])
+                            ])
+                          : _vm._e(),
+                        _vm._v(" "),
+                        _vm.company.hasOwnProperty("id")
+                          ? _c("div", { staticClass: "col-span-6" }, [
+                              _c("div", { staticClass: "max-w-full" }, [
+                                _c(
+                                  "div",
+                                  {
+                                    staticClass:
+                                      "bg-white shadow-lg rounded-lg py-3"
+                                  },
+                                  [
+                                    _c("div", { staticClass: "py-2 px-10" }, [
+                                      _c(
+                                        "h3",
+                                        {
+                                          staticClass:
+                                            "text-center text-xl text-gray-900 font-medium leading-8"
+                                        },
+                                        [_vm._v("Virtual Office")]
+                                      ),
+                                      _vm._v(" "),
+                                      _c(
+                                        "div",
+                                        {
+                                          staticClass:
+                                            "text-center text-gray-400 text-xs font-semibold"
+                                        },
+                                        [
+                                          _c("p", [
+                                            _vm._v(
+                                              "menampilkan data virtual office"
+                                            )
+                                          ])
+                                        ]
+                                      ),
+                                      _vm._v(" "),
+                                      _vm.company.hasOwnProperty("id")
+                                        ? _c(
+                                            "table",
+                                            { staticClass: "text-xs my-3" },
+                                            [
+                                              _c("tbody", [
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "Harga Virtual Office"
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company.harga_vo
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "Tanggal Aggrement"
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company
+                                                            .tanggal_aggrement
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [_vm._v("Tanggal Selesai")]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company
+                                                            .tanggal_selesai
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "Fasilitas Meeting Room"
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company
+                                                            .fasilitas_meeting_room
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "Fasilitas Konsultasi Pajak"
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company
+                                                            .fasilitas_konsultasi_pajak
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "Fasilitas Private Office"
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company
+                                                            .fasilitas_private_office
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ]),
+                                                _vm._v(" "),
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "px-2 py-2 text-gray-500 font-semibold"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "Papan Nama Perusahaan"
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass: "px-2 py-2"
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        _vm._s(
+                                                          _vm.company
+                                                            .papan_nama_perusahaan
+                                                        )
+                                                      )
+                                                    ]
+                                                  )
+                                                ])
+                                              ])
+                                            ]
+                                          )
+                                        : _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "mt-3 bg-red-400 text-white rounded-xl text-center font-bold"
+                                            },
+                                            [
+                                              _vm._v(
+                                                "\n                                                    data tidak tersedia\n                                                "
+                                              )
+                                            ]
+                                          )
+                                    ])
+                                  ]
+                                )
+                              ])
+                            ])
+                          : _vm._e()
+                      ]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _vm.company.hasOwnProperty("id")
+                    ? _c(
+                        "div",
+                        {
+                          staticClass:
+                            "col-span-8 bg-white overflow-hidden shadow-lg sm:rounded-lg"
+                        },
+                        [
+                          _c("div", { staticClass: "flex flex-col" }, [
                             _c(
                               "div",
                               {
                                 staticClass:
-                                  "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+                                  "-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8"
                               },
                               [
                                 _c(
-                                  "table",
+                                  "div",
                                   {
                                     staticClass:
-                                      "min-w-full divide-y divide-gray-200"
+                                      "py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8"
                                   },
                                   [
-                                    _c("thead", { staticClass: "bg-gray-50" }, [
-                                      _c("tr", [
+                                    _c(
+                                      "div",
+                                      {
+                                        staticClass:
+                                          "shadow overflow-hidden border-b border-gray-200 sm:rounded-lg"
+                                      },
+                                      [
                                         _c(
-                                          "th",
+                                          "table",
                                           {
                                             staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
+                                              "min-w-full divide-y divide-gray-200"
                                           },
                                           [
-                                            _vm._v(
-                                              "\n                                                        Jan\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Feb\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Mar\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Apr\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Mei\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Jun\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Jul\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Agu\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Sep\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Okt\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Nov\n                                                    "
-                                            )
-                                          ]
-                                        ),
-                                        _vm._v(" "),
-                                        _c(
-                                          "th",
-                                          {
-                                            staticClass:
-                                              "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
-                                            attrs: { scope: "col" }
-                                          },
-                                          [
-                                            _vm._v(
-                                              "\n                                                        Des\n                                                    "
+                                            _c(
+                                              "thead",
+                                              { staticClass: "bg-gray-50" },
+                                              [
+                                                _c("tr", [
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Jan\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Feb\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Mar\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Apr\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Mei\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Jun\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Jul\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Agu\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Sep\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Okt\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Nov\n                                                        "
+                                                      )
+                                                    ]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "th",
+                                                    {
+                                                      staticClass:
+                                                        "px-3 py-2 text-left text-xs font-medium text-gray-500 uppercase tracking-wider",
+                                                      attrs: { scope: "col" }
+                                                    },
+                                                    [
+                                                      _vm._v(
+                                                        "\n                                                            Des\n                                                        "
+                                                      )
+                                                    ]
+                                                  )
+                                                ])
+                                              ]
+                                            ),
+                                            _vm._v(" "),
+                                            _c(
+                                              "tbody",
+                                              {
+                                                staticClass:
+                                                  "bg-white divide-y divide-gray-200"
+                                              },
+                                              [
+                                                _c("tr", [
+                                                  _c(
+                                                    "td",
+                                                    {
+                                                      staticClass:
+                                                        "text-sm text-center py-4 whitespace-nowrap",
+                                                      attrs: { colspan: "12" }
+                                                    },
+                                                    [
+                                                      _c(
+                                                        "div",
+                                                        {
+                                                          staticClass:
+                                                            "bg-red-400 text-white rounded-xl text-center font-bold"
+                                                        },
+                                                        [
+                                                          _vm._v(
+                                                            "\n                                                                data tidak tersedia\n                                                            "
+                                                          )
+                                                        ]
+                                                      )
+                                                    ]
+                                                  )
+                                                ])
+                                              ]
                                             )
                                           ]
                                         )
-                                      ])
-                                    ]),
-                                    _vm._v(" "),
-                                    _c(
-                                      "tbody",
-                                      {
-                                        staticClass:
-                                          "bg-white divide-y divide-gray-200"
-                                      },
-                                      [
-                                        _c("tr", [
-                                          _c(
-                                            "td",
-                                            {
-                                              staticClass:
-                                                "text-sm text-center py-4 whitespace-nowrap",
-                                              attrs: { colspan: "12" }
-                                            },
-                                            [
-                                              _c(
-                                                "div",
-                                                {
-                                                  staticClass:
-                                                    "bg-red-400 text-white rounded-xl text-center font-bold"
-                                                },
-                                                [
-                                                  _vm._v(
-                                                    "\n                                                            data tidak tersedia\n                                                        "
-                                                  )
-                                                ]
-                                              )
-                                            ]
-                                          )
-                                        ])
                                       ]
                                     )
                                   ]
                                 )
                               ]
                             )
-                          ]
-                        )
-                      ]
-                    )
-                  ])
+                          ])
+                        ]
+                      )
+                    : _vm._e()
                 ]
               )
             ])
