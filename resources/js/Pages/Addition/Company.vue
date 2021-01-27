@@ -8,7 +8,8 @@
 
         <div class="pt-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="grid grid-cols-12 gap-4 py-4 items-center">
+                <!-- Top Table Tools -->
+                <div class="grid grid-cols-12 gap-4 py-4 items-center print:hidden">
 
                     <div class="col-span-12 text-gray-700 items-center">
                         <div class="grid grid-cols-12 gap-4">
@@ -59,7 +60,7 @@
                                     <button type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md font-bold text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:rounded-lg">
                                         <font-awesome-icon :icon="['fas', 'file-export']" />
                                     </button>
-                                    <button type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md  font-bold text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:rounded-lg">
+                                    <button @click="printTable" type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md  font-bold text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:rounded-lg">
                                         <font-awesome-icon :icon="['fas', 'print']" />
                                     </button>
                                     <button @click="toggleModalAdd" type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md  font-bold text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 sm:rounded-lg">
@@ -72,171 +73,174 @@
                     </div>
 
                 </div>
-                <div class="relative bg-white overflow-hidden shadow-lg sm:rounded-lg">
+                <!-- END Top Table Tools -->
+
+                <!-- Table -->
+                <div class="relative bg-white overflow-hidden print:overflow-visible shadow-lg sm:rounded-lg print:shadow-none">
                     <div class="flex flex-col">
-                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="-my-2 overflow-x-auto print:overflow-visible sm:-mx-6 lg:-mx-8">
                             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                                <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                <div class="overflow-hidden print:overflow-visible border-b border-gray-200 sm:rounded-lg">
 
                                     <table class="min-w-full divide-y divide-gray-200">
 
-                                        <thead class=" bg-gray-50">
-                                            <tr>
-                                                <th @click="sort('nama_perusahaan')" scope="col" class="select-none group whitespace-nowrap px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                        <thead class="table-row-group bg-gray-50">
+                                            <tr class="print:divide-x">
+                                                <th @click="sort('nama_perusahaan')" scope="col" class="select-none group whitespace-nowrap print:whitespace-normal px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider print:p-0">
                                                     Nama Perusahaan
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-up']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='nama_perusahaan'&&currentSortDir==='asc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='nama_perusahaan'&&currentSortDir==='desc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-down-alt']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='nama_perusahaan'&&currentSortDir==='desc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='nama_perusahaan'&&currentSortDir==='asc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                 </th>
-                                                <th @click="sort('pic')" scope="col" class="select-none group whitespace-nowrap px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <th @click="sort('pic')" scope="col" class="select-none group whitespace-nowrap print:whitespace-normal px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider print:p-0">
                                                     Pic
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-up']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='pic'&&currentSortDir==='asc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='pic'&&currentSortDir==='desc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-down-alt']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='pic'&&currentSortDir==='desc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='pic'&&currentSortDir==='asc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                 </th>
-                                                <th @click="sort('telepon')" scope="col" class="select-none group whitespace-nowrap px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <th @click="sort('telepon')" scope="col" class="select-none group whitespace-nowrap print:whitespace-normal px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider print:p-0">
                                                     Telepon
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-up']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='telepon'&&currentSortDir==='asc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='telepon'&&currentSortDir==='desc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-down-alt']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='telepon'&&currentSortDir==='desc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='telepon'&&currentSortDir==='asc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                 </th>
-                                                <th @click="sort('email')" scope="col" class="select-none group whitespace-nowrap px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <th @click="sort('email')" scope="col" class="select-none group whitespace-nowrap print:whitespace-normal px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider print:p-0">
                                                     Email
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-up']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='email'&&currentSortDir==='asc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='email'&&currentSortDir==='desc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-down-alt']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='email'&&currentSortDir==='desc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='email'&&currentSortDir==='asc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                 </th>
-                                                <th @click="sort('created_at')" scope="col" class="select-none group whitespace-nowrap px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <th @click="sort('created_at')" scope="col" class="select-none group whitespace-nowrap print:whitespace-normal px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider print:p-0">
                                                     Tanggal Dibuat
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-up']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='created_at'&&currentSortDir==='asc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='created_at'&&currentSortDir==='desc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-down-alt']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='created_at'&&currentSortDir==='desc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='created_at'&&currentSortDir==='asc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                 </th>
                                                 <!-- BEFORE FREEZE COLUMN -->
-                                                <!-- <th @click="sort('updated_at')" scope="col" class="select-none group whitespace-nowrap px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> -->
+                                                <!-- <th @click="sort('updated_at')" scope="col" class="select-none group whitespace-nowrap print:whitespace-normal px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider print:p-0"> -->
                                                 <!-- END BEFORE FREEZE COLUMN -->
-                                                <th @click="sort('updated_at')" scope="col" class="pr-24 select-none group whitespace-nowrap px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <th @click="sort('updated_at')" scope="col" class="select-none group whitespace-nowrap print:whitespace-normal px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider pr-24 print:p-0">
                                                     Tanggal Diedit
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-up']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='updated_at'&&currentSortDir==='asc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='updated_at'&&currentSortDir==='desc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                     <font-awesome-icon :icon="['fas', 'sort-amount-down-alt']"
                                                         :class="{
                                                             'text-gray-500 group-hover:text-gray-500': currentSort==='updated_at'&&currentSortDir==='desc',
                                                             'text-gray-300 group-hover:text-gray-300': currentSort==='updated_at'&&currentSortDir==='asc'
                                                         }"
-                                                        class="text-transparent group-hover:text-gray-300"
+                                                        class="text-transparent group-hover:text-gray-300 print:hidden"
                                                     />
                                                 </th>
                                                 <!-- BEFORE FREEZE COLUMN -->
-                                                <!-- <th scope="col" class="w-24 select-none whitespace-nowrap px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"> -->
+                                                <!-- <th scope="col" class="w-24 select-none whitespace-nowrap print:whitespace-normal px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider print:hidden"> -->
                                                 <!-- END BEFORE FREEZE COLUMN -->
-                                                <th scope="col" class="absolute right-0 bg-gray-50 w-24 border-l select-none whitespace-nowrap px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                                <th scope="col" class="absolute right-0 bg-gray-50 w-24 border-l select-none whitespace-nowrap print:whitespace-normal px-4 py-3 text-left text-xs font-bold text-gray-500 uppercase tracking-wider print:hidden">
                                                     Aksi
                                                 </th>
                                             </tr>
                                         </thead>
 
                                         <tbody class="bg-white divide-y divide-gray-200" v-if="companies.length > 0">
-                                            <tr v-for="(c) in SortedCompany" :key="c.id">
-                                                <td class="px-4 py-3 whitespace-nowrap">
+                                            <tr v-for="(c) in SortedCompany" :key="c.id" class="print:divide-x">
+                                                <td class="px-4 py-3 print:p-0 whitespace-nowrap print:whitespace-normal">
                                                     <div class="flex items-center">
                                                     <div class="text-sm text-gray-900">{{c.nama_perusahaan}}</div>
                                                     </div>
                                                 </td>
-                                                <td class="px-4 py-3 whitespace-nowrap">
+                                                <td class="px-4 py-3 print:p-0 whitespace-nowrap print:whitespace-normal">
                                                     <div class="flex items-center">
                                                     <div class="text-sm text-gray-900">{{c.pic}}</div>
                                                     </div>
                                                 </td>
-                                                <td class="px-4 py-3 whitespace-nowrap">
+                                                <td class="px-4 py-3 print:p-0 whitespace-nowrap print:whitespace-normal">
                                                     <div class="flex items-center">
                                                     <div class="text-sm text-gray-900">{{c.telepon}}</div>
                                                     </div>
                                                 </td>
-                                                <td class="px-4 py-3 whitespace-nowrap">
+                                                <td class="px-4 py-3 print:p-0 whitespace-nowrap print:whitespace-normal">
                                                     <div class="flex items-center">
                                                     <div class="text-sm text-gray-900">{{c.email}}</div>
                                                     </div>
                                                 </td>
-                                                <td class="px-4 py-3 whitespace-nowrap">
+                                                <td class="px-4 py-3 print:p-0 whitespace-nowrap print:whitespace-normal">
                                                     <div class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
                                                         {{convertUnixTS(c.created_at)}}
                                                     </div>
                                                 </td>
-                                                <td class="px-4 py-3 whitespace-nowrap">
+                                                <td class="px-4 py-3 print:p-0 whitespace-nowrap print:whitespace-normal">
                                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
                                                         {{convertUnixTS(c.updated_at)}}
                                                     </span>
                                                 </td>
                                                 <!-- BEFORE FREEZE COLUMN -->
-                                                <!-- <td class="px-4 py-3 whitespace-nowrap"> -->
+                                                <!-- <td class="px-4 py-3 print:p-0 whitespace-nowrap print:whitespace-normal print:hidden"> -->
                                                 <!-- END BEFORE FREEZE COLUMN -->
-                                                <td class="absolute right-0 bg-white pt- mt-1 border-l flex justify-center w-24 whitespace-nowrap">
+                                                <td class="absolute right-0 bg-white pt- mt-1 border-l flex justify-center w-24 print:hidden">
                                                     <div class="inline-flex">
-                                                        <button @click="toggleModalEdit(c)" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-3 rounded-l">
+                                                        <button @click="toggleModalEdit(c)" class="bg-blue-600 hover:bg-blue-500 text-white h-10 w-10 sm:rounded-l">
                                                             <font-awesome-icon :icon="['fas', 'paint-brush']" />
                                                         </button>
-                                                        <button @click="doDelete(c.id)" class="bg-pink-600 hover:bg-pink-500 text-white font-bold py-2 px-3 rounded-r">
+                                                        <button @click="doDelete(c.id)" class="bg-pink-600 hover:bg-pink-500 text-white h-10 w-10 sm:rounded-r">
                                                             <font-awesome-icon :icon="['fas', 'trash']" />
                                                         </button>
                                                     </div>
@@ -266,7 +270,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="grid grid-cols-12 gap-4 py-4 items-start">
+                <!-- END Table -->
+
+                <!-- Bottom Table Tools -->
+                <div class="grid grid-cols-12 gap-4 py-4 items-start print:hidden">
                     <div class="col-span-12">
                         <div class="flex text-gray-700 justify-end items-center">
 
@@ -338,6 +345,8 @@
                         </div>
                     </div>
                 </div>
+                <!-- END Bottom Table Tools -->
+
             </div>
         </div>
 
@@ -420,6 +429,14 @@
 </template>
 
 <style scoped>
+    /* print style */
+    @page {
+        size: landscape;
+        margin:0;
+    }
+    body {
+        writing-mode: tb-rl;
+    }
     /* Chrome, Safari, Edge, Opera */
     .inputDestinationPage::-webkit-outer-spin-button,
     .inputDestinationPage::-webkit-inner-spin-button {
@@ -476,6 +493,9 @@
                 this.isShowModalEdit = !this.isShowModalEdit
                 this.modalMode = 'EDIT'
                 this.company.fill(c);
+            },
+            printTable(){
+                window.print()
             },
             async getCompany(){
                 await axios.get('api/company', this.company)

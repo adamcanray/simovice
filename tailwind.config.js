@@ -11,6 +11,9 @@ module.exports = {
 
     theme: {
         extend: {
+            screens: {
+                'print': {'raw': 'print'},
+            },
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
