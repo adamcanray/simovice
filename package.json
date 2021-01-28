@@ -36,6 +36,8 @@
         "@fortawesome/vue-fontawesome": "^2.0.2",
         "moment": "^2.29.1",
         "moment-timezone": "^0.5.32",
+        "papaparse": "^5.3.0",
+        "pdfmake": "^0.1.70",
         "sweetalert2": "^10.13.0",
         "vform": "^1.0.1",
         "vue2-filters": "^0.11.1"

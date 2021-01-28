@@ -57,7 +57,7 @@
                                 </div>
 
                                 <div class="flex-grow md:flex-grow-0 flex justify-end gap-4">
-                                    <button type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md font-bold text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:rounded-lg">
+                                    <button @click="exportTable" type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md font-bold text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:rounded-lg">
                                         <font-awesome-icon :icon="['fas', 'file-export']" />
                                     </button>
                                     <button @click="printTable" type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md  font-bold text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:rounded-lg">
@@ -223,12 +223,12 @@
                                                     </div>
                                                 </td>
                                                 <td class="px-4 py-3 print:p-0 whitespace-nowrap print:whitespace-normal">
-                                                    <div class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800">
+                                                    <div class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-yellow-100 text-yellow-800 print:text-gray-900">
                                                         {{convertUnixTS(c.created_at)}}
                                                     </div>
                                                 </td>
                                                 <td class="px-4 py-3 print:p-0 whitespace-nowrap print:whitespace-normal">
-                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800 print:text-gray-900">
                                                         {{convertUnixTS(c.updated_at)}}
                                                     </span>
                                                 </td>
@@ -453,6 +453,11 @@
     import AppLayout from '@/Layouts/AppLayout'
     import Welcome from '@/Jetstream/Welcome'
     import JetModal from '@/Jetstream/Modal'
+    import Papa from "papaparse"
+    import pdfMake from "pdfmake/build/pdfmake"
+    import pdfFonts from "pdfmake/build/vfs_fonts"
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs // https://stackoverflow.com/a/63189876/11587161
 
     export default {
         components: {
@@ -469,7 +474,7 @@
                 company: new Form({
                     id: '',
                     nama_perusahaan: '',
-                     pic: '',
+                    pic: '',
                     telepon: '',
                     email: '',
                 }),
@@ -480,6 +485,7 @@
                 currentSortDir:'asc',
                 itemsPerPage:10,
                 currentPage:1,
+                docDefinition: {}
             }
         },
         methods: {
@@ -494,14 +500,65 @@
                 this.modalMode = 'EDIT'
                 this.company.fill(c);
             },
+            buildDocDefinitionTableBody(data, columns) {
+                var body = [];
+                body.push(columns);
+                data.forEach(function(row) {
+                    var dataRow = [];
+                    columns.forEach(function(column) {
+                        if(row[column]){
+                            dataRow.push(row[column].toString());
+                        }else{
+                            dataRow.push(row[column]); // when data null or etc that cannot convert into a String.
+                        }
+                    })
+                    body.push(dataRow);
+                });
+                // console.log(body)
+                return body;
+            },
+            setDocDefinitionTable(data, columns) {
+                return {
+                    table: {
+                        headerRows: 1,
+                        widths: [ '4%', '16%', '16%', '16%', '16%', '16%', '16%', ],
+                        body: this.buildDocDefinitionTableBody(data, columns)
+                    }
+                };
+            },
             printTable(){
-                window.print()
+                // window.print() // only print visible data
+                pdfMake.createPdf(this.docDefinition).download(); // print all data
+            },
+            exportTable(){
+                // var blob = new Blob([Papa.unparse(this.SortedCompany)], { type: 'text/csv;charset=utf-8;' }); // only export visible data
+                var blob = new Blob([Papa.unparse(this.companies)], { type: 'text/csv;charset=utf-8;' }); // export all data
+                var link = document.createElement("a");
+                var url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", 'perusahaan.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             },
             async getCompany(){
                 await axios.get('api/company', this.company)
                 .then((res) => {
                     this.companies = res.data
+                    this.docDefinition = {
+                        content: [
+                            { text: 'TABLE PERUSAHAAN', style: 'header'},
+                            this.setDocDefinitionTable(res.data, ['id','nama_perusahaan','pic','telepon','email','created_at','updated_at'])
+                        ]
+                    }
                 }).catch((err) => {
+                    // Toast.fire({
+                    //     icon: 'warning',
+                    //     iconColor: '#D97706',
+                    //     title: "Gagal memuat! Ada sesuatu yang salah.",
+                    //     showConfirmButton: false,
+                    // })
                     console.log(err.response)
                 });
             },

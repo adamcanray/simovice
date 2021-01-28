@@ -58,7 +58,7 @@
                                 </div>
 
                                 <div class="flex-grow md:flex-grow-0 flex justify-end gap-4">
-                                    <button type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md font-bold text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:rounded-lg">
+                                    <button @click="exportTable" type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md font-bold text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500 sm:rounded-lg">
                                         <font-awesome-icon :icon="['fas', 'file-export']" />
                                     </button>
                                     <button @click="printTable" type="button" class="inline-flex justify-center items-center h-10 w-10 border border-transparent shadow-md  font-bold text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 sm:rounded-lg">
@@ -632,6 +632,11 @@
     import AppLayout from '@/Layouts/AppLayout'
     import Welcome from '@/Jetstream/Welcome'
     import JetModal from '@/Jetstream/Modal'
+    import Papa from "papaparse"
+    import pdfMake from "pdfmake/build/pdfmake"
+    import pdfFonts from "pdfmake/build/vfs_fonts"
+
+    pdfMake.vfs = pdfFonts.pdfMake.vfs // https://stackoverflow.com/a/63189876/11587161
 
     export default {
         components: {
@@ -665,6 +670,7 @@
                 currentSortDir:'asc',
                 itemsPerPage:10,
                 currentPage:1,
+                docDefinition: {}
             }
         },
         methods: {
@@ -679,8 +685,47 @@
                 this.modalMode = 'EDIT'
                 this.virtualOffice.fill(c);
             },
+            buildDocDefinitionTableBody(data, columns) {
+                var body = [];
+                body.push(columns);
+                data.forEach(function(row) {
+                    var dataRow = [];
+                    columns.forEach(function(column) {
+                        if(row[column]){
+                            dataRow.push(row[column].toString());
+                        }else{
+                            dataRow.push(row[column]); // when data null or etc that cannot convert into a String.
+                        }
+                    })
+                    body.push(dataRow);
+                });
+                // console.log(body)
+                return body;
+            },
+            setDocDefinitionTable(data, columns) {
+                return {
+                    table: {
+                        headerRows: 1,
+                        widths: [ '7%', '7%', '7%', '10.2%', '10.2%', '10.2%', '7%', '7%',  '7%',  '7%',  '10.2%', '10.2%', ],
+                        body: this.buildDocDefinitionTableBody(data, columns)
+                    }
+                };
+            },
             printTable(){
-                window.print()
+                // window.print() // only print visible data
+                pdfMake.createPdf(this.docDefinition).download(); // print all data
+            },
+            exportTable(){
+                // var blob = new Blob([Papa.unparse(this.SortedVirtualOffice)], { type: 'text/csv;charset=utf-8;' }); // only export visible data
+                var blob = new Blob([Papa.unparse(this.virtualOffices)], { type: 'text/csv;charset=utf-8;' }); // export all data
+                var link = document.createElement("a");
+                var url = URL.createObjectURL(blob);
+                link.setAttribute("href", url);
+                link.setAttribute("download", 'virtual-office.csv');
+                link.style.visibility = 'hidden';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
             },
             async getCompany(){
                 await axios.get('api/company', this.virtualOffice)
@@ -694,6 +739,12 @@
                 await axios.get('api/virtual-office', this.virtualOffice)
                 .then((res) => {
                     this.virtualOffices = res.data
+                    this.docDefinition = {
+                        content: [
+                            { text: 'TABLE VIRTUAL OFFICE', style: 'header'},
+                            this.setDocDefinitionTable(res.data, ['id','kode_vo','company_id','harga_vo','tanggal_aggrement','tanggal_selesai','fasilitas_meeting_room','fasilitas_konsultasi_pajak','fasilitas_private_office','papan_nama_perusahaan','created_at','updated_at'])
+                        ]
+                    }
                 }).catch((err) => {
                     console.log(err.response)
                 });
